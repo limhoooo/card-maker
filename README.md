@@ -13,7 +13,7 @@ https://firebase.google.com/docs/auth/web/github-auth <br>
 파이어베이스 Authentication 에 구글, 깃허브 추가<br>
 
 ### react-router v6 추가
-$ yarn add react-router
+$ yarn add react-router <br/>
 $ yarn add react-router-dom
 
 
