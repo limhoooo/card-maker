@@ -6,50 +6,23 @@ import { useNavigate } from 'react-router'
 import Editor from '../editor/editor';
 import Preview from '../preview/preview';
 
-const Maker = ({ authService, FileInput }) => {
-    const [cards, setCards] = useState({
-        '1': {
-            id: '1',
-            name: 'limho1',
-            company: 'none',
-            theme: 'dark',
-            title: 'hello world',
-            email: 'nex110@naver.com',
-            message: 'hi my name is ho',
-            fileName: 'hoho',
-            fileURL: null,
-        },
-        '2': {
-            id: '2',
-            name: 'limho2',
-            company: 'none',
-            theme: 'light',
-            title: 'hello world',
-            email: 'nex110@naver.com',
-            message: 'hi my name is ho',
-            fileName: 'hoho',
-            fileURL: null,
-        },
-        '3': {
-            id: '3',
-            name: 'limho3',
-            company: 'none',
-            theme: 'colorful',
-            title: 'hello world',
-            email: 'nex110@naver.com',
-            message: 'hi my name is ho',
-            fileName: 'hoho',
-            fileURL: null,
-        },
-    });
+const Maker = ({ authService, FileInput, cardRepository }) => {
+    const historyState = useNavigate();
+    const [cards, setCards] = useState({});
+    const [userId, setUserId] = useState(historyState && historyState.id);
+
+    console.log(historyState);
     const history = useNavigate();
     const onLogout = () => {
         authService.logout();
     }
     useEffect(() => {
         authService.onAuthChange(user => {
-            if (!user) {
+            if (user) {
+                setUserId(user.uid)
+            } else {
                 history('/')
+
             }
         })
     })
@@ -61,6 +34,7 @@ const Maker = ({ authService, FileInput }) => {
             updated[card.id] = card;
             return updated;
         });
+        cardRepository.saveCard(userId, card);
     }
     const deleteCard = (card) => {
         setCards(cards => {
